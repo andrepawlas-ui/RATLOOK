@@ -16,27 +16,58 @@
         .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.5rem; text-transform: uppercase; letter-spacing: -1px; }
         .contato-topo { font-size: 0.75rem; font-weight: 700; border: 1px solid var(--branco); padding: 5px 12px; }
 
-        /* Vitrine */
-        .hero { padding: 60px 5% 20px; position: relative; } /* Adicionado position: relative aqui */
-        .hero h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(3rem, 10vw, 6rem); text-transform: uppercase; line-height: 0.8; margin-bottom: 40px; position: relative; z-index: 2; }
+        /* --- INÍCIO DO LETREIRO E MASCOTE --- */
+        /* Letreiro Animado (Marquee) */
+        .letreiro-hero {
+            width: 100%;
+            overflow: hidden;
+            background: var(--preto);
+            padding: 30px 0;
+            border-bottom: 1px solid #222;
+            display: flex;
+            white-space: nowrap;
+        }
+        
+        .marquee-content {
+            display: flex;
+            animation: deslizarTexto 15s linear infinite; /* Tempo da corrida do texto */
+        }
+        
+        .marquee-content h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            text-transform: uppercase;
+            margin: 0;
+            padding-right: 30px;
+            color: var(--branco);
+            line-height: 1;
+        }
+        
+        @keyframes deslizarTexto {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Move metade, gerando loop infinito */
+        }
 
-        /* --- INÍCIO DA ANIMAÇÃO DO RATO --- */
+        /* Área do Mascote Saltitante */
+        .mascote-hero {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Centraliza no desktop e celular */
+            align-items: center;
+            padding: 50px 5%;
+        }
+        
         .mascote-animado {
-            position: absolute;
-            bottom: -20px;
-            right: 10%;
-            width: clamp(200px, 35vw, 400px); /* Tamanho responsivo */
-            animation: flutuarRato 4s ease-in-out infinite;
-            z-index: 1;
-            pointer-events: none; /* Para não bloquear cliques em outros elementos */
+            width: clamp(150px, 30vw, 250px); /* Tamanho controlado */
+            /* Animação mais "elástica" para parecer um pulo real */
+            animation: pularRato 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) infinite alternate; 
         }
-
-        @keyframes flutuarRato {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(1deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+        
+        @keyframes pularRato {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-40px) scale(1.05); } /* Pula para cima */
         }
-        /* --- FIM DA ANIMAÇÃO DO RATO --- */
+        /* --- FIM DO LETREIRO E MASCOTE --- */
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 0 5% 100px; }
         .produto-card { background: var(--cinza); border: 1px solid #222; display: flex; flex-direction: column; transition: transform 0.3s ease; }
@@ -69,14 +100,19 @@
         <div class="contato-topo">WHATSAPP: +55 51 9390-4592</div>
     </header>
 
-    <section class="hero">
-        <h1>NEW<br>DROP '26</h1>
-        
+    <section class="letreiro-hero">
+        <div class="marquee-content">
+            <h1>NEW • ESTILO • URBANO • FORTE • NEW • ESTILO • URBANO • FORTE • </h1>
+            <h1>NEW • ESTILO • URBANO • FORTE • NEW • ESTILO • URBANO • FORTE • </h1>
+        </div>
+    </section>
+
+    <section class="mascote-hero">
         <img src="mascote-rat-look.png" alt="Mascote Rat Look" class="mascote-animado">
-        </section>
+    </section>
 
     <div class="grid" id="vitrine">
-        </div>
+    </div>
 
     <div id="admin-panel">
         <div class="admin-box">
@@ -106,14 +142,14 @@
 
         let modoEdicao = false;
 
-      function converterLinkDrive(url) {
-    // Se for link do Drive, converte. Se não for, retorna o link original (como o do Supabase)
-    if (url.includes('drive.google.com')) {
-        const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
-        if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-    }
-    return url; // Retorna o link do Supabase Storage sem alteração
-}
+        function converterLinkDrive(url) {
+            // Se for link do Drive, converte. Se não for, retorna o link original (como o do Supabase)
+            if (url.includes('drive.google.com')) {
+                const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
+                if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+            }
+            return url; // Retorna o link do Supabase Storage sem alteração
+        }
 
         async function carregarProdutos() {
             const { data, error } = await supabaseClient.from('produtos').select('*').order('id', { ascending: false });
