@@ -17,8 +17,26 @@
         .contato-topo { font-size: 0.75rem; font-weight: 700; border: 1px solid var(--branco); padding: 5px 12px; }
 
         /* Vitrine */
-        .hero { padding: 60px 5% 20px; }
-        .hero h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(3rem, 10vw, 6rem); text-transform: uppercase; line-height: 0.8; margin-bottom: 40px; }
+        .hero { padding: 60px 5% 20px; position: relative; } /* Adicionado position: relative aqui */
+        .hero h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(3rem, 10vw, 6rem); text-transform: uppercase; line-height: 0.8; margin-bottom: 40px; position: relative; z-index: 2; }
+
+        /* --- INÍCIO DA ANIMAÇÃO DO RATO --- */
+        .mascote-animado {
+            position: absolute;
+            bottom: -20px;
+            right: 10%;
+            width: clamp(200px, 35vw, 400px); /* Tamanho responsivo */
+            animation: flutuarRato 4s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none; /* Para não bloquear cliques em outros elementos */
+        }
+
+        @keyframes flutuarRato {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        /* --- FIM DA ANIMAÇÃO DO RATO --- */
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 0 5% 100px; }
         .produto-card { background: var(--cinza); border: 1px solid #222; display: flex; flex-direction: column; transition: transform 0.3s ease; }
@@ -53,7 +71,9 @@
 
     <section class="hero">
         <h1>NEW<br>DROP '26</h1>
-    </section>
+        
+        <img src="mascote-rat-look.png" alt="Mascote Rat Look" class="mascote-animado">
+        </section>
 
     <div class="grid" id="vitrine">
         </div>
