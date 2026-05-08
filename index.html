@@ -86,14 +86,16 @@
 
         let modoEdicao = false;
 
-        // Função para converter link do Drive em link direto de imagem
-        function converterLinkDrive(url) {
-            if (url.includes('drive.google.com')) {
-                const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
-                if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-            }
-            return url;
+       function converterLinkDrive(url) {
+    if (url.includes('drive.google.com')) {
+        // Esta regex captura o ID entre '/d/' e '/view'
+        const match = url.match(/\/d\/(.+?)\/view/);
+        if (match && match[1]) {
+            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
+    }
+    return url;
+}
 
         async function carregarProdutos() {
             const { data, error } = await supabaseClient.from('produtos').select('*').order('id', { ascending: false });
