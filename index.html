@@ -86,15 +86,13 @@
 
         let modoEdicao = false;
 
-       function converterLinkDrive(url) {
+      function converterLinkDrive(url) {
+    // Se for link do Drive, converte. Se não for, retorna o link original (como o do Supabase)
     if (url.includes('drive.google.com')) {
-        // Esta regex captura o ID entre '/d/' e '/view'
-        const match = url.match(/\/d\/(.+?)\/view/);
-        if (match && match[1]) {
-            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-        }
+        const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
+        if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
     }
-    return url;
+    return url; // Retorna o link do Supabase Storage sem alteração
 }
 
         async function carregarProdutos() {
